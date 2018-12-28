@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="https://fonts.googleapis.com/css?family=ZCOOL+QingKe+HuangYou" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+    <style>
+        body {
+            /*font-family: 'ZCOOL KuaiLe', cursive;*/
+            font-family: 'Press Start 2P', cursive;
+            background-image: url("https://wallpapertag.com/wallpaper/full/4/1/6/483499-awesome-background-picture-1920x1080-for-lockscreen.jpg");
+            background-size: cover;
+        }
+
+        .color-wheel {
+            color: #c4c4c4;
+            font-size: 22px;
+            text-align: center;
+        }
+
+        #title {
+            color: #c4c4c4;
+            font-size: 2em;
+            text-align: center;
+        }
+
+        #color {
+            border: 2px solid #f3f3f3;
+            border-radius: 10px;
+            height: 25px;
+            margin-top: 50px;
+            width: 65px;
+        }
+
+        #canvas {
+            border: 1px solid black;
+            background-size: 100%;
+            display: block;
+            margin-top: 50px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        #btn {
+            background-color: gray;
+            border: 2px solid #c4c4c4;
+            border-radius: 9px;
+            font-family: 'ZCOOL QingKe HuangYou', cursive;
+            font-size: 18px;
+            height: 28px;
+            margin-left: 47.5%;
+            margin-top: 30px;
+            width: 75px;
+        }
+    </style>
+    
+</head>
+<body>
+    <div id="title"><!--chcek gameTitle() for page title--></div>
+    
+    <div class="color-wheel"> 
+        Color: <input type="color" id="color" />
+        </div>
+
+    <canvas id="canvas"  width="400" height="400"></canvas>
+
+   <input type="button" id="btn" value="Reset"/>
+
+
+    <script>
+        var title = document.getElementById("title");
+        var canvas = document.getElementById("canvas");
+        var color= document.getElementById("color");
+        var btn = document.getElementById("btn");
+        var ctx = canvas.getContext("2d");       
+        
+        //function that displays the title of the project
+        function gameTitle() {
+             title.innerText = "Pixel Art Maker v.3.0.1";
+        }
+        gameTitle();
+
+        //the function that draws the grid     
+        function drawGrid() {
+            ctx.fillStyle = "#009EFF";
+            ctx.fillRect(0, 0, 400, 400);
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = 1;
+            // The for loop that draws the x-axis
+            for (x = 0; x <= 400;  x = x + 20) {
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, 400);
+                ctx.stroke();
+               
+            }
+            
+            // The for loop that drawsthe grid y-axis
+               for (y = 0; y <= 400; y = y + 20) {
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(400, y);
+                    ctx.stroke();  
+                   
+            }
+        }
+        drawGrid();
+
+        function mousePosToCanvasPos(mouseX, mouseY) {
+            var canvasPos = canvas.getBoundingClientRect();
+
+            return {
+                x: Math.floor((mouseX - canvasPos.x) / 20) * 20,
+                y: Math.floor((mouseY - canvasPos.y) / 20) * 20 
+            };
+        }
+
+        //function that allows you to select the box and color fill it with color
+        function colorPicker() {
+            
+                //when you click the canvas you return the color value of the wheel and obtain xPos,YPos
+            canvas.addEventListener("click", function (event) {
+
+                    var newColor = color.value;
+                    var canvasCellPos = mousePosToCanvasPos(event.x, event.y);
+                    ctx.fillRect(canvasCellPos.x, canvasCellPos.y, 19, 19);
+                    ctx.fillStyle = newColor;
+                    xCoord = event.x;
+                    yCoord = event.y;
+                  
+                    //console logs the xCoord
+                    console.log(xCoord, yCoord);
+                    console.log(newColor);
+
+                });
+            
+        }
+        colorPicker();
+
+        //function that resets the grid to normal on the screen
+        function resetPixels() {
+            btn.addEventListener("click", function () {
+                drawGrid();
+                //console log test output to ensure button is clicking
+                console.log("You hit the Reset button");
+                
+                
+            });
+        }
+        resetPixels();
+
+
+</script>
+
+</body>
+</html>
